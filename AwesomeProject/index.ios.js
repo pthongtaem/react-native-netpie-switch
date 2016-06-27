@@ -35,16 +35,34 @@ class AwesomeProject extends Component {
         };
 
         var onSwitchActivate = async() => {
-            fetch('https://api.netpie.io/topic/' + this.state.topic + '?auth=Task9JnxtDsOeLt:D0plMFJrx3igmngkar718BGGY', {
+            let topic = 'https://api.netpie.io/topic/' + this.state.topic + '?auth=Task9JnxtDsOeLt:' +
+                'D0plMFJrx3igmngkar718BGGY';
+
+            let reqOpts = {
                 method: 'PUT',
                 body: 'ON'
-            })
+            };
+
+            console.log("activate", topic);
+
+            fetch(topic, reqOpts)
+                .then((response) => response.json())
+                .then((responseJson) => {
+                    if (responseJson.code != 200) {
+                        alert(JSON.stringify(responseJson));
+                    }
+                    else {
+                        console.log("then", responseJson);
+                    }
+                })
         };
 
         var onSwitchDeactivate = async() => {
             fetch('https://api.netpie.io/topic/' + this.state.topic + '?auth=Task9JnxtDsOeLt:D0plMFJrx3igmngkar718BGGY', {
                 method: 'PUT',
                 body: 'OFF'
+            }).then(async(response) => {
+                console.log("then", await response.text());
             })
         };
 
@@ -54,9 +72,9 @@ class AwesomeProject extends Component {
                     <Text style={[styles.labelNetpie]}>NETPIE</Text>
                 </View>
                 <View style={styles.body}>
-                    <Text style={styles.labelTopic}>Topic example : HelloCMMC/gearname/...</Text>
+                    { /*<Text style={styles.labelTopic}>Topic example : HelloCMMC/gearname/...</Text>*/ }
                     <TextInput
-                        placeholder=' This is topic ...'
+                        placeholder='Topic e.g. HelloCMMC/gearname/esp01'
                         style={styles.textInput}
                         onChange={onTextInputChange}
                     />
