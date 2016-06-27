@@ -10,22 +10,49 @@ import {
     StyleSheet,
     Text,
     View,
+    Animated,
+    Dimensions,
     TextInput
 } from 'react-native';
+
+let windowWidth = Dimensions.get('window').width
+let windowHeight = Dimensions.get('window').height
+
 
 import FormatTime from 'minutes-seconds-milliseconds';
 import Button from 'apsl-react-native-button';
 import Switch from 'react-native-material-switch';
 
 class AwesomeProject extends Component {
+    callXToast() {
+        Animated.timing(
+            this.animatedXValue,
+            {
+                toValue: 0,
+                duration: 350
+            }).start(this.closeXToast())
+    }
 
-    constructor() {
-        super();
+    closeXToast() {
+        setTimeout(() => {
+            Animated.timing(
+                this.animatedXValue,
+                {
+                    toValue: -windowWidth,
+                    duration: 350
+                }).start()
+        }, 5000)
+    }
+
+    constructor(props) {
+        super(props);
         this.state = {
             topic: '',
             onState: 'OFF',
             colorState: 'red', test: true
-        }
+        };
+        this.animatedValue = new Animated.Value(0)
+        this.animatedXValue = new Animated.Value(-windowWidth)
     }
 
     render() {
@@ -54,7 +81,9 @@ class AwesomeProject extends Component {
                     else {
                         console.log("then", responseJson);
                     }
+                    this.callXToast();
                 })
+
         };
 
         var onSwitchDeactivate = async() => {
@@ -96,6 +125,13 @@ class AwesomeProject extends Component {
                         onDeactivate={onSwitchDeactivate}
                     />
                 </View>
+                <Animated.View
+                    style={{ transform: [{ translateX: this.animatedXValue }], height: 70, marginTop: windowHeight - 70,
+                            backgroundColor: 'green', position: 'absolute', left:0, top:0, width: windowWidth,
+                            justifyContent: 'center' }}>
+                    <Text
+                        style={{ marginLeft: 10, color: 'white', fontSize:16, fontWeight: 'bold', textAlign: 'center' }}>Success!</Text>
+                </Animated.View>
             </View>
         );
     }
