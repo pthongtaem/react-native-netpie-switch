@@ -15,16 +15,15 @@ import {
     TextInput
 } from 'react-native';
 
-let windowWidth = Dimensions.get('window').width
-let windowHeight = Dimensions.get('window').height
+let windowWidth = Dimensions.get('window').width;
+let windowHeight = Dimensions.get('window').height;
 
 
-import FormatTime from 'minutes-seconds-milliseconds';
-import Button from 'apsl-react-native-button';
 import Switch from 'react-native-material-switch';
 
-class AwesomeProject extends Component {
-    callXToast() {
+class AwesomeProject extends React.Component {
+    callXToast(text, color) {
+        this.setState({onState: text, colorState: color});
         Animated.timing(
             this.animatedXValue,
             {
@@ -51,17 +50,19 @@ class AwesomeProject extends Component {
             onState: 'OFF',
             colorState: 'red', test: true
         };
-        this.animatedValue = new Animated.Value(0)
+        this.animatedValue = new Animated.Value(0);
         this.animatedXValue = new Animated.Value(-windowWidth)
     }
+
 
     render() {
         var onTextInputChange = (event) => {
             this.setState({topic: event.nativeEvent.text});
-            // console.log(this.state.topic);
+            console.log(this.state.topic);
         };
 
         var onSwitchActivate = async() => {
+            this.setState({onState: 'ON', colorState: 'green'});
             let topic = 'https://api.netpie.io/topic/' + this.state.topic + '?auth=Task9JnxtDsOeLt:' +
                 'D0plMFJrx3igmngkar718BGGY';
 
@@ -75,18 +76,27 @@ class AwesomeProject extends Component {
             fetch(topic, reqOpts)
                 .then((response) => response.json())
                 .then((responseJson) => {
-                    if (responseJson.code != 200) {
-                        alert(JSON.stringify(responseJson));
+                    console.log(responseJson.code);
+                    if (responseJson.code == 200) {
+                        // alert(JSON.stringify(responseJson));
+                        this.callXToast(responseJson.message, 'green');
+                        // alert("message: 'FALSE'");
+                        // this.callXToast("SUCCESS", 'green');
                     }
+
                     else {
                         console.log("then", responseJson);
+                        // alert(JSON.stringify(responseJson));
+                        this.callXToast(responseJson.message, 'red');
                     }
-                    this.callXToast();
+
+
                 })
 
         };
 
         var onSwitchDeactivate = async() => {
+            this.setState({onState: 'OFF', colorState: 'red'});
             fetch('https://api.netpie.io/topic/' + this.state.topic + '?auth=Task9JnxtDsOeLt:D0plMFJrx3igmngkar718BGGY', {
                 method: 'PUT',
                 body: 'OFF'
@@ -94,6 +104,8 @@ class AwesomeProject extends Component {
                 console.log("then", await response.text());
             })
         };
+
+
 
         return (
             <View style={styles.container}>
@@ -126,11 +138,13 @@ class AwesomeProject extends Component {
                     />
                 </View>
                 <Animated.View
-                    style={{ transform: [{ translateX: this.animatedXValue }], height: 70, marginTop: windowHeight - 70,
-                            backgroundColor: 'green', position: 'absolute', left:0, top:0, width: windowWidth,
-                            justifyContent: 'center' }}>
-                    <Text
-                        style={{ marginLeft: 10, color: 'white', fontSize:16, fontWeight: 'bold', textAlign: 'center' }}>Success!</Text>
+                    style={[styles.animatedView, {
+                    transform: [{translateX: this.animatedXValue}],
+                    backgroundColor: this.state.colorState }]}>
+
+                    <Text style={[styles.animateText]}>{this.state.onState}
+
+                    </Text>
                 </Animated.View>
             </View>
         );
@@ -140,7 +154,7 @@ class AwesomeProject extends Component {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
+        flex: 1
         // borderColor: 'red',
         // borderWidth: 4
     },
@@ -188,7 +202,7 @@ const styles = StyleSheet.create({
     },
     base: {
         width: 38,
-        height: 38,
+        height: 38
     },
     colorLabelState: {},
     footer: {
@@ -207,6 +221,25 @@ const styles = StyleSheet.create({
         borderWidth: 0.5,
         marginLeft: 10,
         marginRight: 10
+    },
+    animateText: {
+        marginLeft: 10,
+        color: 'white',
+        fontSize: 16,
+        fontWeight: 'bold',
+        textAlign: 'center'
+    },
+
+    animatedView: {
+
+        backgroundColor: 'green',
+        height: 70,
+        marginTop: windowHeight - 150,
+        position: 'absolute',
+        left: 0,
+        top: 0,
+        width: windowWidth,
+        justifyContent: 'center'
     }
 });
 
