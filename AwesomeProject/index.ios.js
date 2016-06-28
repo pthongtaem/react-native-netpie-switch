@@ -22,6 +22,7 @@ let windowHeight = Dimensions.get('window').height;
 import Switch from 'react-native-material-switch';
 
 class AwesomeProject extends React.Component {
+
     callXToast(text, color) {
         this.setState({onState: text, colorState: color});
         Animated.timing(
@@ -45,6 +46,7 @@ class AwesomeProject extends React.Component {
 
     constructor(props) {
         super(props);
+        this.topic = "";
         this.state = {
             topic: '',
             onState: 'OFF',
@@ -58,12 +60,13 @@ class AwesomeProject extends React.Component {
     render() {
         var onTextInputChange = (event) => {
             this.setState({topic: event.nativeEvent.text});
+            this.topic = "HelloCMMC/gearname"+ this.state.topic;
             console.log(this.state.topic);
         };
 
         var onSwitchActivate = async() => {
             this.setState({onState: 'ON', colorState: 'green'});
-            let topic = 'https://api.netpie.io/topic/' + this.state.topic + '?auth=Task9JnxtDsOeLt:' +
+            let topic = 'https://api.netpie.io/topic/' + this.topic + '?auth=Task9JnxtDsOeLt:' +
                 'D0plMFJrx3igmngkar718BGGY';
 
             let reqOpts = {
@@ -97,7 +100,7 @@ class AwesomeProject extends React.Component {
 
         var onSwitchDeactivate = async() => {
             this.setState({onState: 'OFF', colorState: 'red'});
-            fetch('https://api.netpie.io/topic/' + this.state.topic + '?auth=Task9JnxtDsOeLt:D0plMFJrx3igmngkar718BGGY', {
+            fetch('https://api.netpie.io/topic/' + this.topic + '?auth=Task9JnxtDsOeLt:D0plMFJrx3igmngkar718BGGY', {
                 method: 'PUT',
                 body: 'OFF'
             }).then(async(response) => {
@@ -115,7 +118,7 @@ class AwesomeProject extends React.Component {
                 <View style={styles.body}>
                     { /*<Text style={styles.labelTopic}>Topic example : HelloCMMC/gearname/...</Text>*/ }
                     <TextInput
-                        placeholder='Topic e.g. HelloCMMC/gearname/esp01'
+                        placeholder='alias e.g. /kitchen'
                         style={styles.textInput}
                         onChange={onTextInputChange}
                     />
@@ -234,7 +237,7 @@ const styles = StyleSheet.create({
 
         backgroundColor: 'green',
         height: 70,
-        marginTop: windowHeight - 150,
+        marginTop: windowHeight - 70 ,
         position: 'absolute',
         left: 0,
         top: 0,
