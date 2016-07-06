@@ -22,7 +22,7 @@ let windowHeight = Dimensions.get('window').height;
 import Switch from 'react-native-material-switch';
 
 class AwesomeProject extends React.Component {
-  
+
     callXToast(text, color) {
         this.setState({onState: text, colorState: color});
         Animated.timing(
