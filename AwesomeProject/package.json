@@ -8,8 +8,8 @@
   "dependencies": {
     "apsl-react-native-button": "^2.5.0",
     "minutes-seconds-milliseconds": "^1.0.3",
-    "react": "^0.14.8",
-    "react-native": "^0.25.1",
-    "react-native-material-switch": "0.0.4"
+    "react": "15.2.1",
+    "react-native": "0.31.0",
+    "react-native-material-switch": "git+https://github.com/recr0ns/react-native-material-switch.git"
   }
 }
