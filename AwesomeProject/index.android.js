@@ -16,8 +16,6 @@ import {
 } from 'react-native';
 
 let windowWidth = Dimensions.get('window').width;
-let windowHeight = Dimensions.get('window').height;
-
 
 import Switch from 'react-native-material-switch';
 
@@ -106,8 +104,6 @@ class AwesomeProject extends React.Component {
             })
         };
 
-
-
         return (
             <View style={styles.container}>
                 <View style={styles.header}>
@@ -123,6 +119,8 @@ class AwesomeProject extends React.Component {
                     {/*<Text style={styles.textState}>{this.state.onState}</Text>*/}
                 </View>
                 <View style={styles.footer}>
+                    <View style={styles.footerdetail}>
+
                     {/*<Button onPress={handleStart} style={styles.btnSend}>
                      <Text style={{ fontSize: 30, fontWeight: '200' }}>Send</Text>
                      </Button>*/}
@@ -137,20 +135,19 @@ class AwesomeProject extends React.Component {
                         onActivate={onSwitchActivate}
                         onDeactivate={onSwitchDeactivate}
                     />
+                    </View>
+                    <Animated.View
+                        style={[styles.animatedView, {
+                        transform: [{translateX: this.animatedXValue}],
+                        backgroundColor: this.state.colorState }]}>
+                        <Text style={[styles.animateText]}>{this.state.onState}
+
+                        </Text>
+                    </Animated.View>
                 </View>
-                <Animated.View
-                    style={[styles.animatedView, {
-                    transform: [{translateX: this.animatedXValue}],
-                    backgroundColor: this.state.colorState }]}>
-
-                    <Text style={[styles.animateText]}>{this.state.onState}
-
-                    </Text>
-                </Animated.View>
             </View>
         );
     }
-
 }
 
 const styles = StyleSheet.create({
@@ -213,6 +210,11 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'flex-start'
     },
+    footerdetail: {
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'flex-start'
+    },
     btnSend: {
         // alignSelf: 'center',
         // width: 646,
@@ -232,13 +234,9 @@ const styles = StyleSheet.create({
     },
 
     animatedView: {
-
         backgroundColor: 'green',
-        height: 70,
-        marginTop: windowHeight - 150,
-        position: 'absolute',
-        left: 0,
-        top: 0,
+        paddingTop: 15,
+        paddingBottom: 15,
         width: windowWidth,
         justifyContent: 'center'
     }
